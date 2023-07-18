@@ -1,0 +1,23 @@
+[
+    {
+      "type": "card",
+      "size": "lg",
+      "theme": "primary",
+      "modules": [
+        {
+          "type": "header",
+          "text": {
+            "type": "plain-text",
+            "content": "title"
+          }
+        },
+        {
+          "type": "section",
+          "text": {
+            "type": "plain-text",
+            "content": "content"
+          }
+        }
+      ]
+    }
+  ]
