@@ -1,7 +1,7 @@
 # pg_imbot
 
 ## 安装
-* 前往 [Release](https://github.com/kasuganosoras/globalban/releases) 下载最新版本的 Source Code
+* 前往 [https://github.com/Cata-a1138/pg_imbot/releases](https://github.com/Cata-a1138/pg_imbot/releases) 下载最新版本的 Source Code
 * 将压缩包内的 `pg_imbot-x.x.x` 文件夹放入服务器的 `resources` 目录
 * 重命名文件夹为 `pg_imbot`
 * 在你的 `server.cfg` 中添加一行 `ensure pg_imbot`
