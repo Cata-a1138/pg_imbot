@@ -34,7 +34,7 @@
 exports.pg_imbot:SendKOOKCard(channelID, card, data)
 ```
 | 参数 | 类型 | 可选 | 描述|
-|:-:|:-:|:-:|:-:|
+|:-:|:-:|:-:|:-|
 |channelID|string/number|是|要发送信息的频道ID或config中配置的频道名,为空则使用config中Default的值|
 |card|table|否|要发送的卡片模板|
 |data|table|否|要替换的信息|
@@ -53,7 +53,7 @@ exports.pg_imbot:SendKOOKCard(
 exports.pg_imbot:SendQQGroup(botQQ, group, content)
 ```
 | 参数 | 类型 | 可选 | 描述|
-|:-:|:-:|:-:|:-:|
+|:-:|:-:|:-:|:-|
 |botQQ|number|是|机器人QQ号|
 |group|string/number|是|要发送信息的群号或config中配置的名称,为空则使用config中Default的值|
 |content|table|否|要发送的信息|
