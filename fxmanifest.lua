@@ -1,13 +1,23 @@
+--[[ FX Information ]] --
 fx_version 'cerulean'
-game 'gta5'
-version '1.0.0'
 lua54 'yes'
+game 'gta5'
 
+--[[ Resource Information ]] --
+name 'pg_imbot'
 author 'Cata_a <3478600437@qq.com>'
+version '1.0.0'
+
+--[[ Manifest ]] --
+shared_scripts {
+    '@pg_lib/shared.lua',
+}
 
 server_scripts {
     'config.lua',
-    'server.lua'
+    'source/server.lua'
+    'source/kookHandler.lua.'
+    'source/qqHandler.lua'
 }
 
 files {
