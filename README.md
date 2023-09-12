@@ -31,7 +31,7 @@
 
 ## 发送KOOK卡片消息
 ```lua
-exports.pg_imbot:SendKOOKCard(channelID, card, data)
+exports.pg_imbot:CreateMessage(channelID, card, data)
 ```
 | 参数 | 类型 | 可选 | 描述|
 |:-:|:-:|:-:|:-|
@@ -41,7 +41,7 @@ exports.pg_imbot:SendKOOKCard(channelID, card, data)
 
 示例
 ```lua
-exports.pg_imbot:SendKOOKCard(
+exports.pg_imbot:CreateMessage(
     'Admin',
     json.decode(LoadResourceFile(GetCurrentResourceName(), 'Card.json')),
     {title='测试', content='这里是一个啦啦啦啦啦啦超级无敌爆炸螺旋长的公告'}
