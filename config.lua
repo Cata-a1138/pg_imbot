@@ -2,15 +2,15 @@ Config = {}
 
 Config.KOOK = {
     -- 机器人Token
-    Token = '1/MTkwNTA=/pmafYhlrsWqc4IX8oY1ONg==',
+    Token = '',
 
     -- 机器人Verify Token
-    VerifyToken = 'KL8iu4kunLQjwqwt',
+    VerifyToken = '',
 
     -- 频道ID
     Channel = {
-        Default = '5700900467697863',
-        Admin = '5700900467697863'
+        Default = '',
+        Admin = ''
     }
 }
 
@@ -23,7 +23,7 @@ Config.QQ = {
     
     -- 群号
     Group = {
-        Default = '324720838',
-        Admin = '324720838'
+        Default = '',
+        Admin = ''
     }
 }
