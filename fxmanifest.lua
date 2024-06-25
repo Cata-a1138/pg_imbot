@@ -10,14 +10,18 @@ version '1.0.0'
 
 --[[ Manifest ]] --
 shared_scripts {
+    '@ox_lib/init.lua',
     '@pg_lib/shared.lua',
 }
 
 server_scripts {
+    '@oxmysql/lib/MySQL.lua',
     'config.lua',
-    'source/server.lua'
-    'source/kookHandler.lua.'
-    'source/qqHandler.lua'
+    'source/server.lua',
+    'source/api.lua',
+    'source/event/QQ.lua',
+    'source/event/KOOK.lua',
+    'source/classes/txAdmin.lua',
 }
 
 files {

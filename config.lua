@@ -1,29 +1,34 @@
-Config = {}
+Config = {
+    -- 命令符号
+    CommandSymbol = '/',
 
-Config.KOOK = {
-    -- 机器人Token
-    Token = '1/MTkwNTA=/pmafYhlrsWqc4IX8oY1ONg==',
+    KOOK = {
+        -- API版本
+        ApiVersion = 3,
 
-    -- 机器人Verify Token
-    VerifyToken = 'KL8iu4kunLQjwqwt',
+        -- 机器人Token
+        Token = '',
 
-    -- 频道ID
-    Channel = {
-        Default = '5700900467697863',
-        Admin = '5700900467697863'
-    }
-}
+        -- 机器人Verify Token
+        VerifyToken = '',
 
-Config.QQ = {
-    -- 通信端口
-    Port = '19730',
+        -- 服务器ID
+        ServerId = '',
 
-    -- 机器人QQ号
-    BotQQ = '3267927916',
-    
-    -- 群号
-    Group = {
-        Default = '324720838',
-        Admin = '324720838'
-    }
+        -- 频道ID
+        Channel = {
+        },
+
+        Role = {
+        },
+    },
+
+    QQ = {
+        -- HTTP服务端口
+        Port = 7000,
+
+        -- 群号
+        Group = {
+        },
+    },
 }

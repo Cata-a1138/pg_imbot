@@ -1,101 +1,65 @@
-imbot = {}
---[[ 替换文本函数 ]]
-imbot.replace_text = function(table, data)
-	if type(table) == 'table' then
-		for key, value in pairs(table) do
-			if type(value) == 'string' then
-				-- 如果匹配到需要替换的键，则进行替换
-				for k, v in pairs(data) do
-					value = value:gsub(k, v)
-				end
-				table[key] = value
-			elseif type(value) == 'table' then
-				-- 如果当前字段是一个表，则递归遍历该表
-				replace_text(value, data)
-			end
+_g = {
+	KOOKEventsHandler = {},
+	QQEventsHandler = {},
+	CommandSymbolLen = string.len(Config.CommandSymbol),
+}
+
+ImBot = {
+	Config = Config,
+	KOOK = {},
+	QQ = {},
+}
+
+---调用事件处理程序
+---@param handlers table
+---@param request table
+---@param response table
+---@param data table
+local function callEventHandler(handlers, request, response, data)
+	if handlers then
+		for _, v in pairs(handlers) do
+			local doBreak = false
+			local _response = setmetatable({}, {
+				__index = function(self, index)
+					doBreak = true
+					return response[index]
+				end,
+			})
+			v(request, _response, data)
+
+			-- 防止重复发送返回信息
+			if doBreak then return end
 		end
 	end
+
+	-- 若对应事件没有注册的处理程序, 或没有处理程序响应, 返回默认响应
+	response.writeHead(200)
+	response.send()
 end
 
--- - - - - - - - - - - - ---
---  _  _____   ___  _  __ --
--- | |/ / _ \ / _ \| |/ / --
--- | ' < (_) | (_) | ' <  --
--- |_|\_\___/ \___/|_|\_\ --
--- - - - - - - - - - - - ---
---[[ 发送KOOK频道聊天消息 ]]
-imbot.kook.CreateMessage = function(type, channel, content)
-	-- 处理频道ID
-	if channel == nil or channel == '' then
-		channel = Config.KOOK.Channel.Default
-	elseif type(channel) == 'string' then
-		channel = Config.KOOK.Channel[channel]
-	end
-
-	-- 替换文本
-	if type == 9 then
-		imbot.replace_text(content[1], content[2])
-		content = content[1]
-	end
-	
-
-	-- 访问接口
-	PerformHttpRequest('https://www.kookapp.cn/api/v3/message/create',                         -- URL链接
-		function(err, text, headers) end,                                                      -- 返回结果处理函数
-		'POST',                                                                                -- 请求方式
-		json.encode({ type = type, target_id = channel, content = json.encode(content) }),          -- 请求内容
-		{ ['Content-Type'] = 'application/json', ["Authorization"] = 'Bot ' .. Config.KOOK.Token } -- 请求头
-	)
-end
-exports('CreateMessage', imbot.kook.CreateMessage)
-RegisterNetEvent('pg_imbot:CreateMessage', imbot.kook.CreateMessage)
-
--- - - - - - - - --
---   ___   ___   --
---  / _ \ / _ \  --
--- | (_) | (_) | --
---  \__\_\\__\_\ --
--- - - - - - - - --
---[[ 发送QQ群消息 ]]
-imbot.qq.SendGroup = function(botQQ, group, content)
-	-- 处理机器人QQ
-	if botQQ == nil or botQQ == '' then
-		botQQ = Config.QQ.DefaultBotQQ
-	end
-
-	-- 处理群号
-	if group == nil or group == '' then
-		channel = Config.QQ.Group.Default
-	elseif type(group) == 'string' then
-		group = Config.QQ.Group[group]
-	end
-
-	-- 访问接口
-	PerformHttpRequest('http://127.0.0.1:' .. Config.QQ.Port, -- URL链接
-		function(err, text, headers) end,                     -- 返回结果处理函数
-		'POST',                                               -- 请求方式
-		'<0ewqwi>' .. Config.QQ.BotQQ .. '</0ewqwi><I1ed5q>' .. group .. '</I1ed5q><W18kpc>' .. content .. '</W18kpc>'
-	)
-end
-exports('SendGroup', imbot.qq.SendGroup)
-RegisterNetEvent('pg_imbot:SendGroup', imbot.qq.SendGroup)
-
---[[ HTTP请求处理 ]]
+-- HTTP请求处理
 SetHttpHandler(function(request, response)
+	-- 请求方式错误
+	if request.method == 'GET' then
+		response.writeHead(404)
+		response.send()
+		return
+	end
+
 	request.setDataHandler(function(data)
-		local data = json.decode(data)
-		-- TriggerClientEvent('table', -1, { request, response, data })
-		if data.d ~= nil and data.d.verify_token == Config.KOOK.VerifyToken then
-			if KookEventsHandler[data.d.channel_type] then
-				KookEventsHandler[data.d.channel_type](request, response, data)
-			else
-				response.send('404')
-			end
-		elseif request.path == '/bind' then
-			local var1 = exports.pg_loadingscreen:verifyCode(data.verifyCode, 'qq', data.user)
-			response.send(tostring(var1))
+		local _data = json.decode(data)
+		if request.path:find('/kook') and _data.d.verify_token == Config.KOOK.VerifyToken then
+			callEventHandler(_g.KOOKEventsHandler[_data.d.channel_type], request, response, _data.d)
+		elseif request.path == '/qq' then
+			callEventHandler(_g.QQEventsHandler[_data.post_type], request, response, _data)
 		else
-			request.setCancelHandler(function() end)
+			-- 路径不存在
+			response.writeHead(404)
+			response.send()
 		end
 	end)
+end)
+
+exports('getSharedObject', function()
+	return ImBot
 end)
